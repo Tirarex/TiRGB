@@ -123,9 +123,8 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
           digitalWrite(Leds[LedToOn], LedSt[LedToOn]);
           DBG_OUTPUT_PORT.println(Leds[LedToOn]);
           DBG_OUTPUT_PORT.println(LedSt[LedToOn]);
-
-
         }
+        
         if (text.startsWith("on")) {
           String lON = (text.substring(text.indexOf("on") + 2, text.length()));
           int LedToOn = lON.toInt();

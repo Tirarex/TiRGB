@@ -1,3 +1,5 @@
+//Made by Tirarex 2017 
+
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
@@ -8,9 +10,9 @@ const char* password = "Crdyyudv"; //Wifi passw here
 const char* host = "esp8266fs";
 
 
-#include "FsServ.h"
-#include "Upd.h"
-#include "WS.h"
+#include "FsServ.h" //Spifs file server
+#include "Upd.h" //Web updater espIP/upd
+#include "WS.h" //WebSockets worker
 
 void setup(void) {
   DBG_OUTPUT_PORT.begin(115200);
