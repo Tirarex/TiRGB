@@ -1,25 +1,28 @@
 #include <WebSocketsServer.h>
 WebSocketsServer webSocket = WebSocketsServer(81);
 
-#define REFRESH_RAINBOW 500
-#define WAIT_RAINBOW 10000
 
 #define BLUEPIN 13
 #define REDPIN 12
 #define GREENPIN 14
 
-
-
 int Leds[2] = {4, 5};
 int LedSt[2] = {1, 1};
+int Colors[3];
 
 unsigned long lastTimeHost = 0;
 unsigned long lastTimeRefresh = 0;
 unsigned long lastTimeRefreshTimer = 0;
 
-int rainbowDelay = WAIT_RAINBOW;
+
+//Rainbow var
+#define WAIT_RAINBOW 10000
+int rainbowDelay = 10000;
 int RGB[3];
 int cnt = 0;
+
+
+
 
 //0-JustLit
 //1-Rainbow
@@ -30,16 +33,6 @@ int cnt = 0;
 int TiMode = 0;
 
 
-void PrepareLed () {
-  pinMode(BLUEPIN, OUTPUT);
-  pinMode(REDPIN, OUTPUT);
-  pinMode(GREENPIN, OUTPUT);
-
-  int i;
-  for (i = 0; i < 1; i = i + 1) {
-    pinMode(Leds[i], OUTPUT);
-  }
-}
 int remap (int val) {
   return map(val, 0, 255, 1023, 0);
 }
@@ -71,8 +64,6 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
         if (text.startsWith("mode")) {
           String tVal = (text.substring(text.indexOf("mode") + 4, text.length()));
           TiMode = tVal.toInt();
-          lastTimeRefreshTimer = 0;
-          lastTimeRefresh = 0;
           switch (TiMode) {
             case 0:
               break;
@@ -90,6 +81,7 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
         if (text.startsWith("red")) {
           String xVal = (text.substring(text.indexOf("red") + 3, text.length()));
           int xInt = xVal.toInt();
+          Colors[0] = xInt;
           analogWrite(REDPIN, remap(xInt));
           TiMode = 0;
         }
@@ -97,6 +89,7 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
         if (text.startsWith("green")) {
           String yVal = (text.substring(text.indexOf("green") + 5, text.length()));
           int yInt = yVal.toInt();
+          Colors[1] = yInt;
           analogWrite(GREENPIN, remap(yInt));
           TiMode = 0;
         }
@@ -104,6 +97,7 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
         if (text.startsWith("blue")) {
           String zVal = (text.substring(text.indexOf("blue") + 4, text.length()));
           int zInt = zVal.toInt();
+          Colors[2] = zInt;
           analogWrite(BLUEPIN, remap(zInt));
           TiMode = 0;
         }
@@ -124,17 +118,17 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
           DBG_OUTPUT_PORT.println(Leds[LedToOn]);
           DBG_OUTPUT_PORT.println(LedSt[LedToOn]);
         }
-        
+
         if (text.startsWith("on")) {
           String lON = (text.substring(text.indexOf("on") + 2, text.length()));
           int LedToOn = lON.toInt();
-           digitalWrite(Leds[LedToOn], 0);
+          digitalWrite(Leds[LedToOn], 0);
         }
 
         if (text.startsWith("off")) {
           String lON = (text.substring(text.indexOf("off") + 3, text.length()));
           int LedToOn = lON.toInt();
-         digitalWrite(Leds[LedToOn], 1);
+          digitalWrite(Leds[LedToOn], 1);
         }
 
       }
@@ -184,11 +178,28 @@ void Wheel(int WheelPos, int* RGB) {
 
 
 
+void ColorLeds (int r, int g, int b) {
+  analogWrite(BLUEPIN, remap (r));
+  analogWrite(REDPIN, remap (g));
+  analogWrite(GREENPIN, remap (b));
+}
+
 // Write wheel to leds
 void writeWheel(int WheelPos, int* RGB) {
   Wheel(WheelPos, RGB);
   analogWrite(REDPIN, remap(RGB[0]));
   analogWrite(GREENPIN, remap(RGB[1]));
   analogWrite(BLUEPIN, remap(RGB[2]));
+}
+void PrepareLed () {
+  pinMode(BLUEPIN, OUTPUT);
+  pinMode(REDPIN, OUTPUT);
+  pinMode(GREENPIN, OUTPUT);
+
+
+  int i;
+  for (i = 0; i < 1; i = i + 1) {
+    pinMode(Leds[i], OUTPUT);
+  }
 }
 

@@ -10,7 +10,6 @@
 
 
         <script>
-
             var connection = new WebSocket('ws://'+location.hostname+':81/')
 
             connection.onerror = function(error) {
@@ -72,7 +71,6 @@
                         Pick color
                         <input type="color" id="html5colorpicker" onchange="sendColor(this.value)" value="#ff0000" >
                     </p>
-
                     <p>
                         <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myModal">
                             Mode
@@ -84,24 +82,18 @@
                         <button type="button" onclick="RgbGlob(0)" class="btn btn-default " >
                             Off
                         </button>
-
-
-
                     </p>
                 </div>
             </div>
-
-
-
 
             <div class="panel panel-info">
                 <div class="panel-heading">Точечный свет</div>
                 <div class="panel-body">
                     <p>
-                        <button type="button" onclick="LedOn()" class="btn btn-default ">
+                        <button type="button" onclick="" class="btn btn-default ">
                             All ON
                         </button>
-                        <button type="button" onclick="SendVar('led',4)" class="btn btn-default " >
+                        <button type="button" onclick="" class="btn btn-default " >
                             ALL OFF
                         </button>
                     </p>
@@ -112,10 +104,10 @@
                         <button type="button" onclick="SendVar('led',1)" class="btn btn-default " >
                             Light 2
                         </button>
-                        <button type="button" onclick="LedOn()" class="btn btn-default ">
+                        <button type="button" onclick="SendVar('led',2)" class="btn btn-default ">
                             Light 3
                         </button>
-                        <button type="button" onclick="LedOn()" class="btn btn-default " >
+                        <button type="button" onclick="SendVar('led',3)" class="btn btn-default " >
                             Light 4
                         </button>
                     </p>
@@ -153,16 +145,16 @@
                 <div class="panel-body">
 
                     <p>
-                        <button type="button" class="btn btn-default " >
+                        <button type="button"  onclick="location.href='/shutdown'" class="btn btn-default " >
                             Off all
                         </button>
-                        <button type="button" class="btn btn-default " >
+                        <button type="button"  onclick="location.href='/reboot'" class="btn btn-default " >
                             Reboot
                         </button>
-                        <button type="button" href="/upd" class="btn btn-default " >
+                        <button type="button"  onclick="location.href='/upd'" class="btn btn-default " >
                             Update
                         </button>
-                        <button type="button" href="/edit.htm" class="btn btn-default " >
+                        <button type="button" onclick="location.href='/edit.htm'" class="btn btn-default " >
                             Editor
                         </button>
                     </p>
@@ -189,7 +181,7 @@
                             Rainbow
                         </button>
 
-                        <button type="button" onclick="SendVar('mode',2)" class="btn btn-primary " >
+                        <button type="button" onclick="SendVar('mode',3)" class="btn btn-primary " >
                             Blink
                         </button>
 
