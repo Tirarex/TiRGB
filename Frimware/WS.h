@@ -2,12 +2,7 @@
 WebSocketsServer webSocket = WebSocketsServer(81);
 
 
-#define BLUEPIN 13
-#define REDPIN 12
-#define GREENPIN 14
 
-int Leds[2] = {4, 5};
-int LedSt[2] = {1, 1};
 int Colors[3];
 
 unsigned long lastTimeHost = 0;
@@ -36,6 +31,7 @@ int TiMode = 0;
 int remap (int val) {
   return map(val, 0, 255, 1023, 0);
 }
+
 // WebSOcket Events
 void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
   switch (type) {
@@ -176,8 +172,6 @@ void Wheel(int WheelPos, int* RGB) {
   }
 }
 
-
-
 void ColorLeds (int r, int g, int b) {
   analogWrite(BLUEPIN, remap (r));
   analogWrite(REDPIN, remap (g));
@@ -198,7 +192,7 @@ void PrepareLed () {
 
 
   int i;
-  for (i = 0; i < 1; i = i + 1) {
+  for (i = 0; i < ledscount; i = i + 1) {
     pinMode(Leds[i], OUTPUT);
   }
 }

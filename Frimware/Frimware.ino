@@ -1,16 +1,11 @@
 //Made by Tirarex 2017
+#include "Settings.h" //Spifs file server
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-const char* ssid = "OlolololO"; //SSID HEre
-const char* password = "Crdyyudv"; //Wifi passw here
-const char* host = "esp8266fs";
-
-int brightness = 0;    // how bright the LED is
-int fadeAmount = 1;    // how many points to fade the LED by
 
 #include "FsServ.h" //Spifs file server
 #include "Upd.h" //Web updater espIP/upd
@@ -67,9 +62,6 @@ void loop(void) {
       case 2:
         break;
       case 3:
-
-
-
         break;
       case 4:
         break;

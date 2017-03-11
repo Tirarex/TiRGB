@@ -1,8 +1,6 @@
 #include <FS.h>
 
 ESP8266WebServer server(80);
-
-#define DBG_OUTPUT_PORT Serial
 File fsUploadFile;
 
 String formatBytes(size_t bytes){
