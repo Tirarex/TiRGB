@@ -61,13 +61,13 @@
                     <p>
                         Red
                         <input type="range" id="slider3-range" value="0" min="0" max="255" oninput="SendVar('red',this.value)"
-                               step="5" />
-                        Green
+                              data-highlight="true"  />
+                        Green 
                         <input type="range" id="slider1-range" value="0" min="0" max="255" oninput="SendVar('green',this.value)"
                                data-highlight="true" />
                         Blue
                         <input type="range" id="slider2-range" value="0" min="0" max="255" oninput="SendVar('blue',this.value)"
-                               step="5" data-highlight="true" />
+                              data-highlight="true" />
                         Pick color
                         <input type="color" id="html5colorpicker" onchange="sendColor(this.value)" value="#ff0000" >
                     </p>

@@ -1,13 +1,13 @@
 
 //Wifi Settings
-const char* ssid = "OlolololO"; //SSID HEre
+const char* ssid = "Xiaomi"; //SSID HEre
 const char* password = "Crdyyudv"; //Wifi passw here
 
 
 //RGB Strip pins 
-#define BLUEPIN 13
+#define BLUEPIN 14
 #define REDPIN 12
-#define GREENPIN 14
+#define GREENPIN 13
 
 //Pount light pins
 const int ledscount=2;

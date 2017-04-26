@@ -21,7 +21,10 @@ void setup(void) {
   ColorLeds (255, 0, 0);
   WiFi.mode(WIFI_AP_STA);
   WiFi.begin(ssid, password);
+  int ledBL=0;
   while (WiFi.status() != WL_CONNECTED) {
+    ledBL=1-ledBL;
+  ColorLeds (255*ledBL, 0, 0);
     delay(500);
     DBG_OUTPUT_PORT.print(".");
   }
@@ -47,6 +50,12 @@ void setup(void) {
 void loop(void) {
   server.handleClient();
   webSocket.loop();
+
+ if (WiFi.status() != WL_CONNECTED) {
+    ESP.reset();
+  }
+
+  
   if (millis() - lastTimeHost > 10) {
 
     lastTimeHost = millis();

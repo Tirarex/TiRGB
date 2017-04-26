@@ -29,7 +29,7 @@ int TiMode = 0;
 
 
 int remap (int val) {
-  return map(val, 0, 255, 1023, 0);
+  return map(val, 0, 255, 0, 1023);
 }
 
 // WebSOcket Events
