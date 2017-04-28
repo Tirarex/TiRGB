@@ -1,36 +1,16 @@
-#include <WebSocketsServer.h>
-WebSocketsServer webSocket = WebSocketsServer(81);
+
+/*
+ * WebSocke LIB by Links2004
+ * https://github.com/Links2004/arduinoWebSockets
+ */
+#include <WebSocketsServer.h> 
+WebSocketsServer webSocket = WebSocketsServer(81);//WS Server INIT
 
 
-
-int Colors[3];
-
+//Ws timers
 unsigned long lastTimeHost = 0;
 unsigned long lastTimeRefresh = 0;
 unsigned long lastTimeRefreshTimer = 0;
-
-
-//Rainbow var
-#define WAIT_RAINBOW 10000
-int rainbowDelay = 10000;
-int RGB[3];
-int cnt = 0;
-
-
-
-
-//0-JustLit
-//1-Rainbow
-//2-blink
-//3-fade
-//4-Music
-//5-reserved
-int TiMode = 0;
-
-
-int remap (int val) {
-  return map(val, 0, 255, 0, 1023);
-}
 
 // WebSOcket Events
 void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
@@ -60,18 +40,6 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
         if (text.startsWith("mode")) {
           String tVal = (text.substring(text.indexOf("mode") + 4, text.length()));
           TiMode = tVal.toInt();
-          switch (TiMode) {
-            case 0:
-              break;
-            case 1:
-              break;
-            case 2:
-              break;
-            case 3:
-              break;
-            case 4:
-              break;
-          }
         }
 
         if (text.startsWith("red")) {
@@ -99,10 +67,7 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
         }
 
         if (text == "RESET") {
-          TiMode = 0;
-          analogWrite(BLUEPIN, LOW);
-          analogWrite(REDPIN, LOW);
-          analogWrite(GREENPIN, LOW);
+         ESP.reset();
         }
 
 
@@ -142,58 +107,4 @@ void InitWs() {
   webSocket.onEvent(WSEvent);
 }
 
-void Wheel(int WheelPos, int* RGB) {
-  WheelPos = WheelPos % 256;
-
-  if (WheelPos < 85) {
-    RGB[0] = WheelPos * 3;
-    RGB[1] = 255 - WheelPos * 3;
-    RGB[2] = 0;
-  }
-  else if (WheelPos < 170) {
-    WheelPos -= 85;
-    RGB[2] = WheelPos * 3;
-    RGB[0] = 255 - WheelPos * 3;
-    RGB[1] = 0;
-  }
-  else if (WheelPos < 255) {
-    WheelPos -= 170;
-    RGB[1] = WheelPos * 3;
-    RGB[2] = 255 - WheelPos * 3;
-    RGB[0] = 0;
-
-  }
-  else
-  {
-    WheelPos -= 255;
-    RGB[0] = WheelPos * 3;
-    RGB[1] = 255 - WheelPos * 3;
-    RGB[2] = 0;
-  }
-}
-
-void ColorLeds (int r, int g, int b) {
-  analogWrite(BLUEPIN, remap (r));
-  analogWrite(REDPIN, remap (g));
-  analogWrite(GREENPIN, remap (b));
-}
-
-// Write wheel to leds
-void writeWheel(int WheelPos, int* RGB) {
-  Wheel(WheelPos, RGB);
-  analogWrite(REDPIN, remap(RGB[0]));
-  analogWrite(GREENPIN, remap(RGB[1]));
-  analogWrite(BLUEPIN, remap(RGB[2]));
-}
-void PrepareLed () {
-  pinMode(BLUEPIN, OUTPUT);
-  pinMode(REDPIN, OUTPUT);
-  pinMode(GREENPIN, OUTPUT);
-
-
-  int i;
-  for (i = 0; i < ledscount; i = i + 1) {
-    pinMode(Leds[i], OUTPUT);
-  }
-}
 

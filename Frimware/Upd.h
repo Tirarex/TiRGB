@@ -1,4 +1,15 @@
-const char* serverIndex = "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>";
+/*
+ * Update Page 
+ * WebUpdate Sample
+ */
+
+//Store page on esp8266 static memory (PROGMEM)
+const char serverIndex[] PROGMEM = R"=====( 
+<form method='POST' action='/update' enctype='multipart/form-data'>
+  <input type='file' name='update'>
+  <input type='submit' value='Update'>
+</form>
+)=====";
 
 void HandleUpdate() {
    server.on("/upd", HTTP_GET, [](){

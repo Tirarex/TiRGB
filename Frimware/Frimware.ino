@@ -1,48 +1,34 @@
 //Made by Tirarex 2017
-#include "Settings.h" //Spifs file server
+#include "Settings.h" //Settings file
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-
+#include "System.h" //System func
 #include "FsServ.h" //Spifs file server
-#include "Upd.h" //Web updater espIP/upd
+#include "Upd.h" //Web updater 
 #include "WS.h" //WebSockets worker
 
 void setup(void) {
   DBG_OUTPUT_PORT.begin(115200);
-  PrepareLed ();
+  PrepareLed();//Make magic
+  PrepareMem(); //ReadMem
 
-  ColorLeds (255, 255, 0);
-  PrepareMem();
+  if (WifiSetup==1){
 
-  ColorLeds (255, 0, 0);
-  WiFi.mode(WIFI_AP_STA);
-  WiFi.begin(ssid, password);
-  int ledBL=0;
-  while (WiFi.status() != WL_CONNECTED) {
-    ledBL=1-ledBL;
-  ColorLeds (255*ledBL, 0, 0);
-    delay(500);
-    DBG_OUTPUT_PORT.print(".");
+
+
+
+  }else{ 
+    SetupWifi();//StartupWifi
+    HandleUpdate();//Start updater service
+    BindPages();//Start Spiffs service
+    InitWs();//WebSockets init
   }
-  DBG_OUTPUT_PORT.println("");
-  DBG_OUTPUT_PORT.print("Connected! IP address: ");
-  DBG_OUTPUT_PORT.println(WiFi.localIP());
+  server.begin(); ColorLeds (0, 0, 0);
 
-  ColorLeds (0, 0, 255);
-
-  MDNS.begin(host);
-  MDNS.addService("ws", "tcp", 81);
-  MDNS.addService("http", "tcp", 80);
-
-  HandleUpdate() ; //Start updater service
-  BindPages(); //Start Spiffs service
-  InitWs();
-  server.begin();
-  ColorLeds (0, 0, 0);
 }
 
 
@@ -50,16 +36,14 @@ void setup(void) {
 void loop(void) {
   server.handleClient();
   webSocket.loop();
+  CheckWifiConnection();
 
- if (WiFi.status() != WL_CONNECTED) {
-    ESP.reset();
-  }
 
   
   if (millis() - lastTimeHost > 10) {
-
     lastTimeHost = millis();
   }
+  
   if (millis() - lastTimeRefresh > WAIT_RAINBOW && millis() - lastTimeRefreshTimer > rainbowDelay ) {
     lastTimeRefreshTimer = millis();
     switch (TiMode) {

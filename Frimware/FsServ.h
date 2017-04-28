@@ -1,3 +1,7 @@
+
+/*
+ * FS server browser sample (SPIFS)
+ */
 #include <FS.h>
 
 ESP8266WebServer server(80);
@@ -126,6 +130,7 @@ void handleFileList() {
 
 
 void PrepareMem() {
+    ColorLeds (255, 255, 0);
   DBG_OUTPUT_PORT.printf("ReadMem");
     SPIFFS.begin();
   {
