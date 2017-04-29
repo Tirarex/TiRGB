@@ -1,4 +1,6 @@
 
+
+
 //Wifi Settings
 const char* ssid = "Xiaomi"; //SSID Here
 const char* password = "Crdyyudv"; //Wifi passw here
@@ -7,7 +9,18 @@ const char* password = "Crdyyudv"; //Wifi passw here
 const char* ApName = "TiRGB"; //Settings Ap name
 const char* ApPassw = "Jfdf5dgrg7"; //Settings Ap passw
 
+//System
+#define EEPROMSize 512
 
+/*
+ * EEPROM STACK
+ * |----------------------------------512----------------------------------------|
+ * |-0-32-SSID-Name-|-32-96-Passw-|-96-97-Ap-mode-|-97-110-RGB-Coeff-|-reserved--|
+ */
+
+
+//Smoth color 
+float SmoCol=0.03;
 
 //RGB Strip pins 
 int RedMult=1;

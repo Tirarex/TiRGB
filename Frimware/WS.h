@@ -46,7 +46,6 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
           String xVal = (text.substring(text.indexOf("red") + 3, text.length()));
           int xInt = xVal.toInt();
           Colors[0] = xInt;
-          analogWrite(REDPIN, remap(xInt));
           TiMode = 0;
         }
 
@@ -54,7 +53,6 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
           String yVal = (text.substring(text.indexOf("green") + 5, text.length()));
           int yInt = yVal.toInt();
           Colors[1] = yInt;
-          analogWrite(GREENPIN, remap(yInt));
           TiMode = 0;
         }
 
@@ -62,7 +60,6 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
           String zVal = (text.substring(text.indexOf("blue") + 4, text.length()));
           int zInt = zVal.toInt();
           Colors[2] = zInt;
-          analogWrite(BLUEPIN, remap(zInt));
           TiMode = 0;
         }
 

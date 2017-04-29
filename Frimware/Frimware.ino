@@ -5,7 +5,9 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <EEPROM.h>//EEPROM Lib 
 
+#include "EEPROM.h" //EEPROM simple lib
 #include "System.h" //System func
 #include "FsServ.h" //Spifs file server
 #include "Upd.h" //Web updater 
@@ -14,6 +16,7 @@
 void setup(void) {
   DBG_OUTPUT_PORT.begin(115200);
   PrepareLed();//Make magic
+  InitEEPROM(EEPROMSize);
   PrepareMem(); //ReadMem
 
   if (WifiSetup==1){
@@ -43,6 +46,11 @@ void loop(void) {
   if (millis() - lastTimeHost > 10) {
     lastTimeHost = millis();
   }
+
+  if(TiMode==0){
+     ApplyColor();
+  }
+ 
   
   if (millis() - lastTimeRefresh > WAIT_RAINBOW && millis() - lastTimeRefreshTimer > rainbowDelay ) {
     lastTimeRefreshTimer = millis();

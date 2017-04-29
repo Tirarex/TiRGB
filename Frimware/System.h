@@ -7,6 +7,46 @@ int WifiSetup; //
 
 //Store color 
 int Colors[3];
+float ColorsReal[3];
+
+
+//Remap rgb 0-255 to Aw 0-1023
+int remap (int val) {
+  return map(val, 0, 255, 0, 1023);
+  //return map(val, 0, 255, 1023, 0); //reversed for - + + + rgb strip
+}
+
+void ApplyColor() {
+
+  
+  if  (ColorsReal[0] < Colors[0]){
+    ColorsReal[0]= ColorsReal[0]+ SmoCol;
+  } 
+  if  (ColorsReal[0] > Colors[0]){
+    ColorsReal[0]= ColorsReal[0]- SmoCol;
+  } 
+ 
+  if  (ColorsReal[1] < Colors[1]){
+    ColorsReal[1]= ColorsReal[1]+ SmoCol;
+  } 
+  if  (ColorsReal[1] > Colors[1]){
+    ColorsReal[1]= ColorsReal[1]- SmoCol;
+  } 
+
+   
+  if  (ColorsReal[2] < Colors[2]){
+    ColorsReal[2]= ColorsReal[2]+ SmoCol;
+  } 
+  if  (ColorsReal[2] > Colors[2]){
+    ColorsReal[2]= ColorsReal[2]- SmoCol;
+  } 
+  analogWrite(REDPIN, remap(ColorsReal[0]*RedMult));
+  analogWrite(GREENPIN, remap(ColorsReal[1]*GreenMult));
+  analogWrite(BLUEPIN, remap(ColorsReal[2]*BlueMult));
+}
+
+
+
 
 //Rainbow var
 #define WAIT_RAINBOW 10000
@@ -23,11 +63,6 @@ int cnt = 0;
 int TiMode = 0;
 
 
-//Remap rgb 0-255 to Aw 0-1023
-int remap (int val) {
-  return map(val, 0, 255, 0, 1023);
-  //return map(val, 0, 255, 1023, 0); //reversed for - + + + rgb strip
-}
 
 void Wheel(int WheelPos, int* RGB) {
   WheelPos = WheelPos % 256;
@@ -60,9 +95,9 @@ void Wheel(int WheelPos, int* RGB) {
 
 
 void ColorLeds (int r, int g, int b) {
-  analogWrite(REDPIN, remap(g)*RedMult);
-  analogWrite(GREENPIN, remap(b)*GreenMult);
-   analogWrite(BLUEPIN, remap(r)*BlueMult);
+  analogWrite(REDPIN, remap(r)*RedMult);
+  analogWrite(GREENPIN, remap(g)*GreenMult);
+   analogWrite(BLUEPIN, remap(b)*BlueMult);
 }
 
 // Write wheel to leds
