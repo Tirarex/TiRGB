@@ -1,11 +1,11 @@
 
 
 
-int ErrCount,ledBL;//Varibles for errors and led blinking (when connecting to wifi)
+int ErrCount, ledBL; //Varibles for errors and led blinking (when connecting to wifi)
 
-int WifiSetup; // 
+int WifiSetup; //
 
-//Store color 
+//Store color
 int Colors[3];
 float ColorsReal[3];
 
@@ -18,31 +18,31 @@ int remap (int val) {
 
 void ApplyColor() {
 
-  
-  if  (ColorsReal[0] < Colors[0]){
-    ColorsReal[0]= ColorsReal[0]+ SmoCol;
-  } 
-  if  (ColorsReal[0] > Colors[0]){
-    ColorsReal[0]= ColorsReal[0]- SmoCol;
-  } 
- 
-  if  (ColorsReal[1] < Colors[1]){
-    ColorsReal[1]= ColorsReal[1]+ SmoCol;
-  } 
-  if  (ColorsReal[1] > Colors[1]){
-    ColorsReal[1]= ColorsReal[1]- SmoCol;
-  } 
 
-   
-  if  (ColorsReal[2] < Colors[2]){
-    ColorsReal[2]= ColorsReal[2]+ SmoCol;
-  } 
-  if  (ColorsReal[2] > Colors[2]){
-    ColorsReal[2]= ColorsReal[2]- SmoCol;
-  } 
-  analogWrite(REDPIN, remap(ColorsReal[0]*RedMult));
-  analogWrite(GREENPIN, remap(ColorsReal[1]*GreenMult));
-  analogWrite(BLUEPIN, remap(ColorsReal[2]*BlueMult));
+  if  (ColorsReal[0] < Colors[0]) {
+    ColorsReal[0] = ColorsReal[0] + SmoCol;
+  }
+  if  (ColorsReal[0] > Colors[0]) {
+    ColorsReal[0] = ColorsReal[0] - SmoCol;
+  }
+
+  if  (ColorsReal[1] < Colors[1]) {
+    ColorsReal[1] = ColorsReal[1] + SmoCol;
+  }
+  if  (ColorsReal[1] > Colors[1]) {
+    ColorsReal[1] = ColorsReal[1] - SmoCol;
+  }
+
+
+  if  (ColorsReal[2] < Colors[2]) {
+    ColorsReal[2] = ColorsReal[2] + SmoCol;
+  }
+  if  (ColorsReal[2] > Colors[2]) {
+    ColorsReal[2] = ColorsReal[2] - SmoCol;
+  }
+  analogWrite(REDPIN, ColorsReal[0]*RedMult);
+  analogWrite(GREENPIN, ColorsReal[1]*GreenMult);
+  analogWrite(BLUEPIN, ColorsReal[2]*BlueMult);
 }
 
 
@@ -97,7 +97,7 @@ void Wheel(int WheelPos, int* RGB) {
 void ColorLeds (int r, int g, int b) {
   analogWrite(REDPIN, remap(r)*RedMult);
   analogWrite(GREENPIN, remap(g)*GreenMult);
-   analogWrite(BLUEPIN, remap(b)*BlueMult);
+  analogWrite(BLUEPIN, remap(b)*BlueMult);
 }
 
 // Write wheel to leds
@@ -108,6 +108,7 @@ void writeWheel(int WheelPos, int* RGB) {
   analogWrite(BLUEPIN, remap(RGB[2])*BlueMult);
 }
 void PrepareLed () {
+  analogWriteFreq(LedPWMFreq);
   pinMode(BLUEPIN, OUTPUT);
   pinMode(REDPIN, OUTPUT);
   pinMode(GREENPIN, OUTPUT);
@@ -124,14 +125,14 @@ String ScanAP(void) {
   WiFi.disconnect();
   delay(100); //Delay for run wifi
   int n = WiFi.scanNetworks();
-  Serial.println("Catched :"+n);
-  String ApList="<select name='answer'>";
+  Serial.println("Catched :" + n);
+  String ApList = "<select name='answer'>";
   for (int i = 0; i < n; ++i)
   {
-     ApList += "<option>";
-     ApList += WiFi.SSID(i);
+    ApList += "<option>";
+    ApList += WiFi.SSID(i);
     // ApList += WiFi.RSSI(i);
-     ApList += "</option>";
+    ApList += "</option>";
   }
   ApList += "</select>";
   Serial.println("Closed Wifi scanner :");
@@ -140,13 +141,13 @@ String ScanAP(void) {
 
 
 void SetupWifi () {
- ColorLeds (255, 0, 0);
+  ColorLeds (255, 0, 0);
   WiFi.mode(WIFI_AP_STA);
   WiFi.begin(ssid, password);
-  
+
   while (WiFi.status() != WL_CONNECTED) {
-    ledBL=1-ledBL;
-  ColorLeds (255*ledBL, 0, 0);
+    ledBL = 1 - ledBL;
+    ColorLeds (255 * ledBL, 0, 0);
     delay(500);
     DBG_OUTPUT_PORT.print(".");
   }
@@ -163,15 +164,15 @@ void SetupWifi () {
 
 
 void CheckWifiConnection() {
-  //Attempt to fix lags with disconnect 
+  //Attempt to fix lags with disconnect
   if (WiFi.status() != WL_CONNECTED) {
-  ErrCount++;
-   if (ErrCount >=5) { //if too many errors for 25sec - reboot
-    ESP.reset();
+    ErrCount++;
+    if (ErrCount >= 5) { //if too many errors for 25sec - reboot
+      ESP.reset();
     }
     delay(5000);
-  }else {
-  ErrCount=0;
+  } else {
+    ErrCount = 0;
   }
-  }
+}
 

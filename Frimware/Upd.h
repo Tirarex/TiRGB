@@ -1,10 +1,10 @@
 /*
- * Update Page 
- * WebUpdate Sample
- */
+   Update Page
+   WebUpdate Sample
+*/
 
 //Store page on esp8266 static memory (PROGMEM)
-const char serverIndex[] PROGMEM = R"=====( 
+const char serverIndex[] PROGMEM = R"=====(
 <form method='POST' action='/update' enctype='multipart/form-data'>
   <input type='file' name='update'>
   <input type='submit' value='Update'>

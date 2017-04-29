@@ -1,9 +1,9 @@
 
 /*
- * WebSocke LIB by Links2004
- * https://github.com/Links2004/arduinoWebSockets
- */
-#include <WebSocketsServer.h> 
+   WebSocke LIB by Links2004
+   https://github.com/Links2004/arduinoWebSockets
+*/
+#include <WebSocketsServer.h>
 WebSocketsServer webSocket = WebSocketsServer(81);//WS Server INIT
 
 
@@ -45,26 +45,26 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
         if (text.startsWith("red")) {
           String xVal = (text.substring(text.indexOf("red") + 3, text.length()));
           int xInt = xVal.toInt();
-          Colors[0] = xInt;
+          Colors[0] = remap(xInt);
           TiMode = 0;
         }
 
         if (text.startsWith("green")) {
           String yVal = (text.substring(text.indexOf("green") + 5, text.length()));
           int yInt = yVal.toInt();
-          Colors[1] = yInt;
+          Colors[1] = remap(yInt);
           TiMode = 0;
         }
 
         if (text.startsWith("blue")) {
           String zVal = (text.substring(text.indexOf("blue") + 4, text.length()));
           int zInt = zVal.toInt();
-          Colors[2] = zInt;
+          Colors[2] = remap(zInt);
           TiMode = 0;
         }
 
         if (text == "RESET") {
-         ESP.reset();
+          ESP.reset();
         }
 
 

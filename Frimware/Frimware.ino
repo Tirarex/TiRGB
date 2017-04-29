@@ -19,12 +19,12 @@ void setup(void) {
   InitEEPROM(EEPROMSize);
   PrepareMem(); //ReadMem
 
-  if (WifiSetup==1){
+  if (WifiSetup == 1) {
 
 
 
 
-  }else{ 
+  } else {
     SetupWifi();//StartupWifi
     HandleUpdate();//Start updater service
     BindPages();//Start Spiffs service
@@ -42,31 +42,27 @@ void loop(void) {
   CheckWifiConnection();
 
 
-  
+
   if (millis() - lastTimeHost > 10) {
     lastTimeHost = millis();
   }
 
-  if(TiMode==0){
-     ApplyColor();
-  }
- 
-  
-  if (millis() - lastTimeRefresh > WAIT_RAINBOW && millis() - lastTimeRefreshTimer > rainbowDelay ) {
-    lastTimeRefreshTimer = millis();
-    switch (TiMode) {
-      case 0:
-        break;
-      case 1:
+  switch (TiMode) {
+    case 0:
+      ApplyColor();
+      break;
+    case 1:
+      if (millis() - lastTimeRefresh > WAIT_RAINBOW && millis() - lastTimeRefreshTimer > rainbowDelay ) {
+        lastTimeRefreshTimer = millis();
         writeWheel(cnt++, RGB);
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 4:
-        break;
-    }
+      }
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      break;
   }
 }
 
