@@ -1,7 +1,7 @@
 
 
 
-int ErrCount, ledBL; //Varibles for errors and led blinking (when connecting to wifi)
+int ledBL; //led blinking (when connecting to wifi)
 
 int WifiSetup; //
 
@@ -9,6 +9,13 @@ int WifiSetup; //
 int Colors[3];
 float ColorsReal[3];
 
+
+
+
+float lerp(float from, float to, float val)
+{ 
+ return from + val * (to - from);
+}
 
 //Remap rgb 0-255 to Aw 0-1023
 int remap (int val) {
@@ -139,6 +146,19 @@ String ScanAP(void) {
   return ApList;
 }
 
+void PrepareSetup(void) {
+  ///  server.on("/s", handleSettings);
+}
+
+void RebootESP() {
+  //Save led state
+
+  //Reset
+  ESP.reset();
+}
+
+//
+int ConnectCounter;
 
 void SetupWifi () {
   ColorLeds (255, 0, 0);
@@ -150,6 +170,11 @@ void SetupWifi () {
     ColorLeds (255 * ledBL, 0, 0);
     delay(500);
     DBG_OUTPUT_PORT.print(".");
+    ConnectCounter++;
+    if (ConnectCounter >= 50) {
+      RebootESP();
+    }
+
   }
   DBG_OUTPUT_PORT.println("");
   DBG_OUTPUT_PORT.print("Connected! IP address: ");
@@ -163,12 +188,15 @@ void SetupWifi () {
 }
 
 
+
+//Anti lag
+int ErrCount;
 void CheckWifiConnection() {
   //Attempt to fix lags with disconnect
   if (WiFi.status() != WL_CONNECTED) {
     ErrCount++;
     if (ErrCount >= 5) { //if too many errors for 25sec - reboot
-      ESP.reset();
+      RebootESP();
     }
     delay(5000);
   } else {

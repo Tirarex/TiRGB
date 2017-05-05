@@ -148,6 +148,7 @@ void PrepareMem() {
 }
 
 void BindPages() {
+  
   server.on("/list", HTTP_GET, handleFileList);
   server.on("/edit", HTTP_GET, []() {
     if (!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");

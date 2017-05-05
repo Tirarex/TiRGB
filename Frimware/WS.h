@@ -26,9 +26,12 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
       {
         lastTimeRefresh = millis();
         String text = String((char *) &payload[0]);
-
+         
+            
         DBG_OUTPUT_PORT.printf("WS EVENT:");
         DBG_OUTPUT_PORT.println(text);
+
+
 
         if (text.startsWith("t")) {
           String Timerval = (text.substring(text.indexOf("t") + 1, text.length()));
@@ -64,10 +67,9 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
         }
 
         if (text == "RESET") {
-          ESP.reset();
+          RebootESP();
         }
-
-
+        
         if (text.startsWith("led")) {
           String lON = (text.substring(text.indexOf("led") + 3, text.length()));
           int LedToOn = lON.toInt();
