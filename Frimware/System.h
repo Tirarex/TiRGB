@@ -1,8 +1,7 @@
 
 
-
+ESP8266WebServer server(80);
 int ledBL; //led blinking (when connecting to wifi)
-
 int WifiSetup; //
 
 

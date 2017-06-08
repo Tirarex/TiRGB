@@ -6,11 +6,11 @@
 //3-fade
 //4-Music
 //5-reserved
-
-
-  //Flow
- int FlowStage;
+//Flow
+int FlowStage;
 int TiMode;
+#define WAIT_RAINBOW 10000
+int rainbowDelay = 10000;
 
 //fade
 float FadeCLR[3];
@@ -51,8 +51,8 @@ void Ccolor(int col, int val, int tmode) {
   ColorsOLD[0] = ColorsReal[0];
   ColorsOLD[1] = ColorsReal[1];
   ColorsOLD[2] = ColorsReal[2];
-  if (tmode<1){
-  LigthChSpeed = LigthChSpeedDefault;
+  if (tmode < 1) {
+    LigthChSpeed = LigthChSpeedDefault;
   }
 }
 
@@ -71,60 +71,13 @@ void ApplyColor() {
 }
 
 
-
-
-
-
-//Rainbow var
-#define WAIT_RAINBOW 10000
-int rainbowDelay = 10000;
-int RGB[3];
-int cnt = 0;
-
-
-void Wheel(int WheelPos, int* RGB) {
-  WheelPos = WheelPos % 256;
-  if (WheelPos < 85) {
-    RGB[0] = WheelPos * 3;
-    RGB[1] = 255 - WheelPos * 3;
-    RGB[2] = 0;
-  }
-  else if (WheelPos < 170) {
-    WheelPos -= 85;
-    RGB[2] = WheelPos * 3;
-    RGB[0] = 255 - WheelPos * 3;
-    RGB[1] = 0;
-  }
-  else if (WheelPos < 255) {
-    WheelPos -= 170;
-    RGB[1] = WheelPos * 3;
-    RGB[2] = 255 - WheelPos * 3;
-    RGB[0] = 0;
-
-  }
-  else
-  {
-    WheelPos -= 255;
-    RGB[0] = WheelPos * 3;
-    RGB[1] = 255 - WheelPos * 3;
-    RGB[2] = 0;
-  }
-}
-
-
 void ColorLeds (int r, int g, int b) {
   analogWrite(REDPIN, remap(r)*RedMult);
   analogWrite(GREENPIN, remap(g)*GreenMult);
   analogWrite(BLUEPIN, remap(b)*BlueMult);
 }
 
-// Write wheel to leds
-void writeWheel(int WheelPos, int* RGB) {
-  Wheel(WheelPos, RGB);
-  analogWrite(REDPIN, remap(RGB[0])*RedMult);
-  analogWrite(GREENPIN, remap(RGB[1])*GreenMult);
-  analogWrite(BLUEPIN, remap(RGB[2])*BlueMult);
-}
+
 void PrepareLed () {
   analogWriteFreq(LedPWMFreq);
   pinMode(BLUEPIN, OUTPUT);

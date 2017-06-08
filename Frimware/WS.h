@@ -85,7 +85,7 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
           Ccolor(2, zInt, 0);
         }
 
-
+        //useless fuctions, may be work in future (or not)
 
         if (text.startsWith("led")) {
           String lON = (text.substring(text.indexOf("led") + 3, text.length()));

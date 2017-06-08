@@ -11,9 +11,9 @@
 #include "Led.h" //Led algo 
 #include "System.h" //System func
 #include "FsServ.h" //Spifs file server
+#include "Services.h" //Services (mqtt and etc)
 #include "Upd.h" //Web updater 
 #include "WS.h" //WebSockets worker
-#include "Services.h" //Services (mqtt and etc)
 #include "Buttons.h" //Buttons func
 
 
@@ -33,6 +33,7 @@ void setup(void) {
     HandleUpdate();//Start updater service
     BindPages();//Start Spiffs service
     InitWs();//WebSockets init
+    InitHttpApi();//Http commands 
   }
   server.begin(); ColorLeds (0, 0, 0);
 
