@@ -26,8 +26,8 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
       {
         lastTimeRefresh = millis();
         String text = String((char *) &payload[0]);
-         
-            
+
+
         DBG_OUTPUT_PORT.printf("WS EVENT:");
         DBG_OUTPUT_PORT.println(text);
 
@@ -40,36 +40,53 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
           lastTimeRefresh = 0;
         }
 
-        if (text.startsWith("mode")) {
-          String tVal = (text.substring(text.indexOf("mode") + 4, text.length()));
+        if (text.startsWith("m")) {
+          String tVal = (text.substring(text.indexOf("m") + 1, text.length()));
           TiMode = tVal.toInt();
+
+          switch (TiMode) {
+            case 0:
+              break;
+            case 1:
+              break;
+            case 2:
+              FadeCLR[0] = unmap(ColorsNew[0]);
+              FadeCLR[1] = unmap(ColorsNew[1]);
+              FadeCLR[2] = unmap(ColorsNew[2]);
+              break;
+            case 3:
+              FadeCLR[0] = unmap(ColorsNew[0]);
+              FadeCLR[1] = unmap(ColorsNew[1]);
+              FadeCLR[2] = unmap(ColorsNew[2]);
+              break;
+            case 4:
+              break;
+          }
+
+
+
         }
 
-        if (text.startsWith("red")) {
-          String xVal = (text.substring(text.indexOf("red") + 3, text.length()));
+        if (text.startsWith("r")) {
+          String xVal = (text.substring(text.indexOf("r") + 1, text.length()));
           int xInt = xVal.toInt();
-          Colors[0] = remap(xInt);
-          TiMode = 0;
+          Ccolor(0, xInt, 0);
         }
 
-        if (text.startsWith("green")) {
-          String yVal = (text.substring(text.indexOf("green") + 5, text.length()));
+        if (text.startsWith("g")) {
+          String yVal = (text.substring(text.indexOf("g") + 1, text.length()));
           int yInt = yVal.toInt();
-          Colors[1] = remap(yInt);
-          TiMode = 0;
+          Ccolor(1, yInt, 0);
         }
 
-        if (text.startsWith("blue")) {
-          String zVal = (text.substring(text.indexOf("blue") + 4, text.length()));
+        if (text.startsWith("b")) {
+          String zVal = (text.substring(text.indexOf("b") + 1, text.length()));
           int zInt = zVal.toInt();
-          Colors[2] = remap(zInt);
-          TiMode = 0;
+          Ccolor(2, zInt, 0);
         }
 
-        if (text == "RESET") {
-          RebootESP();
-        }
-        
+
+
         if (text.startsWith("led")) {
           String lON = (text.substring(text.indexOf("led") + 3, text.length()));
           int LedToOn = lON.toInt();

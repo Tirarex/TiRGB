@@ -3,9 +3,10 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="style.css">
+		      <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ti RGB</title>
-        <script src="iro.min.js" charset="utf-8"></script>
-        <script type="text/javascript">
+            <script src="iro.min.js" charset="utf-8"></script>
+        <script async type="text/javascript">
             var connection = new WebSocket('ws://192.168.31.62:81/');
 
             connection.onerror = function(error) {
@@ -23,9 +24,9 @@
 
             function RgbGlob(vval)
             {
-                SendVar('red',vval);
-                SendVar('green',vval);
-                SendVar('blue',vval);
+                SendVar('r',vval);
+                SendVar('g',vval);
+                SendVar('b',vval);
             }
 
             function hexToRgb(hex) {
@@ -43,10 +44,18 @@
                 var RGBColor = hexToRgb(newValue); 
                 //Отправляем данные на ESP
                 if(RGBColor) {  
-                    SendVar('red',(Math.round(RGBColor.r)));
-                    SendVar('green',(Math.round(RGBColor.g)));
-                    SendVar('blue',(Math.round(RGBColor.b)));
-                }
+                    SendVar('r',(Math.round(RGBColor.r)));
+                    SendVar('g',(Math.round(RGBColor.g)));
+                    SendVar('b',(Math.round(RGBColor.b)));
+                   
+                    }
+                
+                
+                
+                
+            
+            
+            
             }
 
 
@@ -66,7 +75,7 @@
 
                 <br>
                 <p>
-                    <button type="button" onclick="SendVar('mode',1)" class="btn btn-primary ">
+                    <button type="button" onclick="SendVar('m',1)" class="btn btn-primary ">
                         Rainbow
                     </button>
                     <input type="range"  value="0" min="1" max="2000" oninput="SendVar('t',this.value)"
@@ -93,7 +102,7 @@
                 </p>
             </div>
             <p>Made by: <a href="http://tiralab.xyz/" target="_blank">http://tiralab.xyz/</a></p>
-            <p>Get it from: <a href="https://github.com/TiRGB" target="_blank">https://github.com/Tirarex/TiRGB/</a></p>
+            <p>Get it from: <a href="github.com/Tirarex/TiRGB" target="_blank">https://github.com/Tirarex/TiRGB/</a></p>
         </div>
     </body>
 </html>

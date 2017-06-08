@@ -1,16 +1,16 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:100,300,600);
 
 body {
-    background: #235E6F;
+    background: #1D1D1D;
     font-family: "Roboto";
 }
 
 .btn {
     font-family: Arial;
     color: #ffffff;
-    background: #00B8D4;
+    background: #004557;
     padding: 10px 20px 10px 20px;
-    border: solid #434d5a 1px;
+    border: none;
     text-decoration: none;
 
     font-family: "Roboto";
@@ -19,7 +19,7 @@ body {
 }
 
 .btn:hover {
-    background: #3cb0fd;
+    background: #00A4A4;
     text-decoration: none;
 }
 
@@ -47,14 +47,15 @@ p {
 .panel {
     display: table;
     margin: 0 auto;
-    border:2px solid #00B8D4;
+    border:2px solid #161616;
     width:50%;
+      background: #161616;
 }
 .panel h2 {
     padding:4px;
     color:#fff;
     margin:0;
-    background-color:#00B8D4;
+    background-color:#161616;
     font-size: 1em;
 }
 
