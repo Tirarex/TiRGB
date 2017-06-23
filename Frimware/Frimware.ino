@@ -7,6 +7,12 @@
 #include <ESP8266mDNS.h>
 #include <EEPROM.h>//EEPROM Lib 
 
+
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
 #include "EEPROM.h" //EEPROM simple lib
 #include "Led.h" //Led algo 
 #include "System.h" //System func
@@ -19,6 +25,9 @@
 
 void setup(void) {
   DBG_OUTPUT_PORT.begin(115200);
+  Wire.pins(5, 4);
+  //Wire.begin(5,4);
+  
   PrepareLed();//Make magic
   InitEEPROM(EEPROMSize);
   PrepareMem(); //ReadMem
@@ -57,7 +66,7 @@ void loop(void) {
       case 0:
         break;
       case 1:
-        LigthChSpeed = 0.00005;
+        LigthChSpeed = 0.001;
         FlowStage++;
         if (FlowStage > 4) {
           FlowStage = 0;

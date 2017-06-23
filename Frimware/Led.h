@@ -21,7 +21,7 @@ float ColorsReal[3];
 float ColorsNew[3];
 float ColorsOLD[3];
 
-float LigthChSpeedDefault = 0.0005;
+float LigthChSpeedDefault = 0.005;
 float LigthChSpeed;
 float LightLerState;
 
@@ -34,12 +34,12 @@ float lerp(float from, float to, float val)
 
 //Remap rgb 0-255 to Aw 0-1023
 int remap (int val) {
-  return map(val, 0, 255, 0, 1023);
+  return map(val, 0, 255, 0, 4094);
   //return map(val, 0, 255, 1023, 0); //reversed for - + + + rgb strip
 }
 
 int unmap (int val) {
-  return map(val, 0, 1023, 0, 255);
+  return map(val, 0, 4094, 0, 255);
   //return map(val, 0, 255, 1023, 0); //reversed for - + + + rgb strip
 }
 
@@ -58,31 +58,34 @@ void Ccolor(int col, int val, int tmode) {
 
 void ApplyColor() {
 
-  if  (LightLerState < 1.0) {
+  if  (LightLerState < 0.99) {
     LightLerState = LightLerState + LigthChSpeed;
   }
   ColorsReal[0] = lerp(ColorsOLD[0], ColorsNew[0], LightLerState);
   ColorsReal[1] = lerp(ColorsOLD[1], ColorsNew[1], LightLerState);
   ColorsReal[2] = lerp(ColorsOLD[2], ColorsNew[2], LightLerState);
 
-  analogWrite(REDPIN, ColorsReal[0]*RedMult);
-  analogWrite(GREENPIN, ColorsReal[1]*GreenMult);
-  analogWrite(BLUEPIN, ColorsReal[2]*BlueMult);
+  pwm.setPWM(1, 0, ( ColorsReal[0]));
+  pwm.setPWM(2, 0, ( ColorsReal[1]));
+  pwm.setPWM(0, 0, ( ColorsReal[2]));
 }
 
 
 void ColorLeds (int r, int g, int b) {
-  analogWrite(REDPIN, remap(r)*RedMult);
-  analogWrite(GREENPIN, remap(g)*GreenMult);
-  analogWrite(BLUEPIN, remap(b)*BlueMult);
+  pwm.setPWM(0, 0, remap(b));
+  pwm.setPWM(1, 0, remap(r));
+  pwm.setPWM(2, 0, remap(g));
+
+
 }
 
 
+
 void PrepareLed () {
-  analogWriteFreq(LedPWMFreq);
-  pinMode(BLUEPIN, OUTPUT);
-  pinMode(REDPIN, OUTPUT);
-  pinMode(GREENPIN, OUTPUT);
+
+  pwm.begin();
+  pwm.setPWMFreq(1600);  // This is the maximum PWM frequency
+  
   int i;
   for (i = 0; i < ledscount; i = i + 1) {
     pinMode(Leds[i], OUTPUT);
