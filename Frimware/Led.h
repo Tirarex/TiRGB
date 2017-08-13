@@ -12,18 +12,18 @@ int TiMode;
 #define WAIT_RAINBOW 10000
 int rainbowDelay = 10000;
 
+
+
 //fade
-float FadeCLR[3];
-
-
+float FadeCLR[16];
 //Store color
-float ColorsReal[3];
-float ColorsNew[3];
-float ColorsOLD[3];
+float ColorsReal[16];
+float ColorsNew[16];
+float ColorsOLD[16];
 
 float LigthChSpeedDefault = 0.005;
 float LigthChSpeed;
-float LightLerState;
+float LightLerState[16];
 
 
 
@@ -45,49 +45,42 @@ int unmap (int val) {
 
 
 void Ccolor(int col, int val, int tmode) {
-  TiMode = tmode;
-  ColorsNew[col] = remap(val);
-  LightLerState = 0;
-  ColorsOLD[0] = ColorsReal[0];
-  ColorsOLD[1] = ColorsReal[1];
-  ColorsOLD[2] = ColorsReal[2];
+  LightLerState[col] = 0;
+  ColorsOLD[col] = ColorsReal[col];
+  ColorsNew[col] = val;
+  LigthChSpeed = LigthChSpeedDefault;
   if (tmode < 1) {
     LigthChSpeed = LigthChSpeedDefault;
   }
 }
 
 void ApplyColor() {
-
-  if  (LightLerState < 0.99) {
-    LightLerState = LightLerState + LigthChSpeed;
+  int i;
+  for (i = 0; i < UsedCH; i = i + 1) {
+    if  (LightLerState[i] < 1.0) {
+      LightLerState[i] = LightLerState[i] + LigthChSpeed;
+    }
+    if  (LightLerState[i] > 1.0) {
+      LightLerState[i] = 1;
+    }
+    ColorsReal[i] = lerp(ColorsOLD[i], ColorsNew[i], LightLerState[i]);
   }
-  ColorsReal[0] = lerp(ColorsOLD[0], ColorsNew[0], LightLerState);
-  ColorsReal[1] = lerp(ColorsOLD[1], ColorsNew[1], LightLerState);
-  ColorsReal[2] = lerp(ColorsOLD[2], ColorsNew[2], LightLerState);
-
-  pwm.setPWM(1, 0, ( ColorsReal[0]));
-  pwm.setPWM(2, 0, ( ColorsReal[1]));
-  pwm.setPWM(0, 0, ( ColorsReal[2]));
 }
-
 
 void ColorLeds (int r, int g, int b) {
   pwm.setPWM(0, 0, remap(b));
   pwm.setPWM(1, 0, remap(r));
   pwm.setPWM(2, 0, remap(g));
-
-
 }
 
-
+void FillChannels () {
+  int i;
+  for (i = 0; i < UsedCH; i = i + 1) {
+    pwm.setPWM(i, 0, ( ColorsReal[i]));
+  }
+}
 
 void PrepareLed () {
-
   pwm.begin();
   pwm.setPWMFreq(1600);  // This is the maximum PWM frequency
-  
-  int i;
-  for (i = 0; i < ledscount; i = i + 1) {
-    pinMode(Leds[i], OUTPUT);
-  }
 }

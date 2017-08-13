@@ -3,20 +3,18 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="style.css">
-		      <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ti RGB</title>
-            <script src="iro.min.js" charset="utf-8"></script>
+
+        <script src="iro.min.js" charset="utf-8"></script>
         <script async type="text/javascript">
-            var connection = new WebSocket('ws://192.168.31.62:81/');
+            var connection = new WebSocket('ws://192.168.1.125:81/');
 
             connection.onerror = function(error) {
                 alert("ERROR " + error.message);
             };
 
-            function SendVar(pref,val)
-            {
-                connection.send(pref+val);
-            }	
+
             function SendPref(val)
             {
                 connection.send(val);
@@ -38,57 +36,81 @@
                 } : null;
             }			
 
-            function sendColor(newValue)
+
+
+            function sendColor(ch1,ch2,ch3,newValue)
             {
-                // получаем RGB из HEX
                 var RGBColor = hexToRgb(newValue); 
-                //Отправляем данные на ESP
                 if(RGBColor) {  
-                    SendVar('r',(Math.round(RGBColor.r)));
-                    SendVar('g',(Math.round(RGBColor.g)));
-                    SendVar('b',(Math.round(RGBColor.b)));
-                   
-                    }
-                
-                
-                
-                
-            
-            
-            
+                    sch(ch1,(Math.round(RGBColor.r))*4);
+                    sch(ch2,(Math.round(RGBColor.g))*4);
+                    sch(ch3,(Math.round(RGBColor.b))*4);
+
+                }
             }
 
 
-            var colorp = new iro.ColorWheel("#IroJSWheel", { });
-            colorp.watch(colorChangeHandler)
-
-            function colorChangeHandler(color) {
-                sendColor(color.hexString);
+            function sch(ch,val)
+            {
+                connection.send("ch"+ch+val);
             }
+
+            connection.onmessage = function(event) {
+                console.log(event.data);
+
+            };
+            function showMessage(message) {
+                var messageElem = document.createElement('div');
+                messageElem.appendChild(document.createTextNode(message));
+                document.getElementById('subscribe').appendChild(messageElem);
+            }
+
+            var colorp = new iro.ColorWheel("#IroJSWheel1", { });
+            colorp.watch(colorChangeHandler1)
+
+            function colorChangeHandler1(color) {
+                sendColor(1,2,0,color.hexString);
+            }
+
+            var colorp = new iro.ColorWheel("#IroJSWheel2", { });
+            colorp.watch(colorChangeHandler2)
+
+            function colorChangeHandler2(color) {
+                sendColor(5,4,6,color.hexString);
+            }
+
+
+
         </script>
     </head>
     <body>
         <div class="stuff">
             <div class="panel">
-                <h2>RGB Strip</h2>
-                <div id="IroJSWheel"></div>
 
-                <br>
+                <h2>RGB Strip</h2>
+
+
+                <div class="panwh">
+                    <div id="IroJSWheel1"  class="Wheel"></div>
+                    <div id="IroJSWheel2" class="Wheel"></div>
+                </div>
+
+
+
+
                 <p>
-                    <button type="button" onclick="SendVar('m',1)" class="btn btn-primary ">
-                        Rainbow
-                    </button>
-                    <input type="range"  value="0" min="1" max="2000" oninput="SendVar('t',this.value)"
-                           step="5" data-highlight="true" />
-                </p>
-                <p>
-                    <button type="button" onclick="RgbGlob(255)" class="btn btn-default " >
-                        On
-                    </button>
-                    <button type="button" onclick="RgbGlob(0)" class="btn btn-default " >
+
+                    CH3  (FAN)<input type="range"  value="0" min="0" max="4095" onchange="sch('3',this.value)"
+                    step="5" data-highlight="true" /> 
+                    
+                        <button type="button" onclick="SendPref('off')" class="btn btn-primary ">
                         Off
                     </button>
                 </p>
+
+
+
+               
                 <p>
                     <button type="button"  onclick="location.href='/reboot'" class="btn " >
                         Reboot
@@ -100,6 +122,11 @@
                         Editor
                     </button>
                 </p>
+
+
+                <div id="subscribe" style="height:300px"></div>
+
+
             </div>
             <p>Made by: <a href="http://tiralab.xyz/" target="_blank">http://tiralab.xyz/</a></p>
             <p>Get it from: <a href="github.com/Tirarex/TiRGB" target="_blank">https://github.com/Tirarex/TiRGB/</a></p>

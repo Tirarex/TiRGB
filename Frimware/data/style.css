@@ -31,9 +31,16 @@ p {
     font-size: 1em;
 }
 
-#IroJSWheel {
+.Wheel {
+
+    float: left;
+}
+
+
+.panwh{
     display: table;
     margin: 0 auto;
+
 }
 
 
@@ -48,7 +55,7 @@ p {
     display: table;
     margin: 0 auto;
     border:2px solid #161616;
-    width:50%;
+    width:80%;
       background: #161616;
 }
 .panel h2 {

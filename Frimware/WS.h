@@ -67,46 +67,26 @@ void WSEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
 
         }
 
-        if (text.startsWith("r")) {
-          String xVal = (text.substring(text.indexOf("r") + 1, text.length()));
-          int xInt = xVal.toInt();
-          Ccolor(0, xInt, 0);
+
+
+        if (text.startsWith("ch")) {
+          String channel = (text.substring(text.indexOf("ch") + 2, 3));
+          int IntChannel = channel.toInt();
+          String ChannelVal = (text.substring(text.indexOf("ch" + channel) + 3, text.length()));
+          int IntChannelVal = ChannelVal.toInt();
+          //webSocket.sendTXT(num, "channel:" + channel + "   Value:" + ChannelVal);
+          Ccolor(IntChannel, IntChannelVal, 0);
         }
 
-        if (text.startsWith("g")) {
-          String yVal = (text.substring(text.indexOf("g") + 1, text.length()));
-          int yInt = yVal.toInt();
-          Ccolor(1, yInt, 0);
-        }
 
-        if (text.startsWith("b")) {
-          String zVal = (text.substring(text.indexOf("b") + 1, text.length()));
-          int zInt = zVal.toInt();
-          Ccolor(2, zInt, 0);
-        }
-
-        //useless fuctions, may be work in future (or not)
-
-        if (text.startsWith("led")) {
-          String lON = (text.substring(text.indexOf("led") + 3, text.length()));
-          int LedToOn = lON.toInt();
-          LedSt[LedToOn] = 1 - LedSt[LedToOn];
-          digitalWrite(Leds[LedToOn], LedSt[LedToOn]);
-          DBG_OUTPUT_PORT.println(Leds[LedToOn]);
-          DBG_OUTPUT_PORT.println(LedSt[LedToOn]);
-        }
-
-        if (text.startsWith("on")) {
-          String lON = (text.substring(text.indexOf("on") + 2, text.length()));
-          int LedToOn = lON.toInt();
-          digitalWrite(Leds[LedToOn], 0);
-        }
 
         if (text.startsWith("off")) {
-          String lON = (text.substring(text.indexOf("off") + 3, text.length()));
-          int LedToOn = lON.toInt();
-          digitalWrite(Leds[LedToOn], 1);
+          int i;
+          for (i = 0; i < UsedCH; i = i + 1) {
+            Ccolor(i, 0, 0);
+          }
         }
+
 
       }
       break;
